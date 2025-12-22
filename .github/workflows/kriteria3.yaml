@@ -45,6 +45,9 @@ jobs:
         git add kriteria3/model_output/*
         
         git commit -m "Auto-update model artifacts [skip ci]" || echo "No changes to commit"
+        
+        git pull --rebase origin main
+        
         git push
 
     # 6. Login Docker Hub
