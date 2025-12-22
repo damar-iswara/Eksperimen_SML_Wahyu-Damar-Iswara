@@ -108,6 +108,6 @@ if __name__ == "__main__":
     INPUT_FILE = "../dataset/python_learning_exam_performance.csv"
     
     # Path output di folder preprocessing/namadataset_preprocessing
-    OUTPUT_FILE = "preprocessing/python_learning_exam_performance_preprocessing.csv"
+    OUTPUT_FILE = "python_learning_exam_performance_preprocessing.csv"
     
     perform_preprocessing(INPUT_FILE, OUTPUT_FILE)
