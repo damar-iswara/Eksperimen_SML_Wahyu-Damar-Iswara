@@ -1,0 +1,19 @@
+digest: a68e835e
+name: dataset
+profile: '{"num_rows": 600, "num_elements": 8400}'
+schema: '{"mlflow_colspec": [{"type": "long", "name": "Unnamed: 0", "required": true},
+  {"type": "long", "name": "country", "required": true}, {"type": "long", "name":
+  "prior_programming_experience", "required": true}, {"type": "double", "name": "weeks_in_course",
+  "required": true}, {"type": "double", "name": "hours_spent_learning_per_week", "required":
+  true}, {"type": "double", "name": "practice_problems_solved", "required": true},
+  {"type": "double", "name": "projects_completed", "required": true}, {"type": "double",
+  "name": "tutorial_videos_watched", "required": true}, {"type": "double", "name":
+  "uses_kaggle", "required": true}, {"type": "double", "name": "participates_in_discussion_forums",
+  "required": true}, {"type": "double", "name": "debugging_sessions_per_week", "required":
+  true}, {"type": "double", "name": "self_reported_confidence_python", "required":
+  true}, {"type": "double", "name": "final_exam_score", "required": true}, {"type":
+  "double", "name": "age_group", "required": true}]}'
+source: '{"tags": {"mlflow.user": "LENOVO", "mlflow.source.name": "d:\\DAMAR\\UNAIR\\COURSE\\Asah\\Materi
+  dan Praktik\\Membangun Sistem Machine Learning\\Eksperimen_SML_Wahyu-Damar-Iswara\\kriteria2\\modelling.py",
+  "mlflow.source.type": "LOCAL", "mlflow.source.git.commit": "aad750155697114f3c6b1b08f6eb75ab7f20e7d7"}}'
+source_type: code

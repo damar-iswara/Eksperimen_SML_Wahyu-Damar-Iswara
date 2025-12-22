@@ -1,0 +1,72 @@
+name: CI Pipeline & Docker Build
+
+on:
+  push:
+    paths:
+      - 'Workflow-CI/**' # Trigger cuma kalau ada perubahan di folder ini
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-train-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    # 1. Checkout Code
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # 2. Setup Python
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12.7'
+
+    # 3. Install Dependencies
+    - name: Install dependencies
+      run: |
+        pip install mlflow pandas scikit-learn numpy matplotlib
+
+    # 4. Run MLflow Project (Training)
+    - name: Train Model
+      run: |
+        cd Workflow-CI/MLProject
+        python modelling.py
+
+    # 5. Commit Artifacts (Simpan Model ke GitHub)
+    - name: Commit Model Artifacts
+      run: |
+        git config --global user.name "GitHub Action Bot"
+        git config --global user.email "actions@github.com"
+        
+        # Add folder model_output
+        git add Workflow-CI/MLProject/model_output/*
+        
+        git commit -m "Auto-update model artifacts [skip ci]" || echo "No changes to commit"
+        git push
+
+    # 6. Login Docker Hub
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    # 7. Build & Push Docker Image
+    # Menggunakan fitur 'mlflow models build-docker'
+    - name: Build and Push Docker Image
+      run: |
+        cd Workflow-CI/MLProject
+        
+        # Nama image format: username/namaimage:tag
+        IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/submission-ml-wahyu:latest
+        
+        echo "Building Docker Image: $IMAGE_NAME"
+        
+        # Command sakti MLflow untuk bikin Docker dari model yg baru dilatih
+        mlflow models build-docker -m model_output -n $IMAGE_NAME --enable-mlserver
+        
+        # Push ke Docker Hub
+        docker push $IMAGE_NAME
