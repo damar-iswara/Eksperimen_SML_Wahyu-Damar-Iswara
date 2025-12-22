@@ -8,7 +8,7 @@ import os
 import shutil
 
 # Konfigurasi Path
-DATA_PATH = "dataset.csv"
+DATA_PATH = "python_learning_exam_performance_preprocessing.csv"
 MODEL_PATH = "model_output"
 
 def main():
