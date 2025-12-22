@@ -26,13 +26,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install pandas numpy scikit-learn
 
-      # PERBAIKAN 1: Path masuk ke folder kriteria1 dulu
       - name: Run Automate Script
         run: |
           cd kriteria1/preprocessing
           python automate_Wahyu-Damar-Iswara.py
 
-      # PERBAIKAN 2: Git add harus sesuai lokasi file CSV yang sebenarnya
       - name: Commit and Push changes
         run: |
           git config --global user.name "GitHub Action Bot"
