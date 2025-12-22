@@ -96,18 +96,21 @@ def perform_preprocessing(input_path, output_path):
         )
 
     # 9. Save Data
-    # Pastikan direktori output ada
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    folder_path = os.path.dirname(output_path)
+    
+    # Hanya buat folder jika folder_path tidak kosong
+    if folder_path:
+        os.makedirs(folder_path, exist_ok=True)
     
     df.to_csv(output_path, index=False)
     print(f"Proses selesai! Data disimpan di: {output_path}")
     print(f"Shape akhir: {df.shape}")
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
     # Path relative ke file raw di folder sibling
     INPUT_FILE = "../dataset/python_learning_exam_performance.csv"
     
-    # Path output di folder preprocessing/namadataset_preprocessing
+    # Path output
     OUTPUT_FILE = "python_learning_exam_performance_preprocessing.csv"
     
     perform_preprocessing(INPUT_FILE, OUTPUT_FILE)
