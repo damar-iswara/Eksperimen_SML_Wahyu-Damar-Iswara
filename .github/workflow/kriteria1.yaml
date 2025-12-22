@@ -1,0 +1,54 @@
+name: Automate Data Preprocessing
+
+# Trigger: Jalan setiap kali ada push ke branch main
+on:
+  push:
+    branches: [ "main" ]
+  # Agar dapat dijalankan manual lewat tombol di GitHub
+  workflow_dispatch:
+
+# Permission: Memberi izin robot untuk menulis (push) balik ke repo
+permissions:
+  contents: write
+
+jobs:
+  build-and-process:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Ambil kodingan dari repo
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Siapkan Python
+      - name: Set up Python 3.12.7
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12.7'
+
+      # 3. Install Library yang dipakai di script
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas numpy scikit-learn
+
+      # 4. Jalankan Script Preprocessing
+      - name: Run Automate Script
+        run: |
+          cd preprocessing
+          python automate_Wahyu-Damar-Iswara.py
+
+      # 5. Commit dan Push hasil CSV baru (jika ada perubahan)
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "actions@github.com"
+          
+          # Add file hasil preprocessing
+          git add preprocessing/namadataset_preprocessing/*.csv
+          
+          # Commit
+          git commit -m "Auto-update processed dataset by GitHub Action" || echo "No changes to commit"
+          
+          # Push balik ke repo
+          git push
