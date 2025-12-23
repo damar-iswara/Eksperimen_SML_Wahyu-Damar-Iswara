@@ -36,8 +36,8 @@ jobs:
           git config --global user.name "GitHub Action Bot"
           git config --global user.email "actions@github.com"
           
-          # Ambil semua file CSV yang ada di folder kriteria1/preprocessing
-          git add kriteria1/preprocessing/*.csv
+          # Ambil semua file CSV yang ada di folder preprocessing
+          git add preprocessing/*.csv
           
           git commit -m "Auto-update processed dataset by GitHub Action" || echo "No changes to commit"
           git push
