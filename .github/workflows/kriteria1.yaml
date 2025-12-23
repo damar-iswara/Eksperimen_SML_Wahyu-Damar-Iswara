@@ -28,7 +28,7 @@ jobs:
 
       - name: Run Automate Script
         run: |
-          cd kriteria1/preprocessing
+          cd preprocessing
           python automate_Wahyu-Damar-Iswara.py
 
       - name: Commit and Push changes
