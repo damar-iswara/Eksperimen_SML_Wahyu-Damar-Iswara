@@ -9,7 +9,7 @@ def perform_preprocessing(input_path, output_path):
     """
     print("--- Memulai Proses Otomatisasi ---")
 
-    # 1. Load Data
+    # Load Data
     if not os.path.exists(input_path):
         print(f"Error: File input tidak ditemukan di {input_path}")
         return
@@ -17,11 +17,11 @@ def perform_preprocessing(input_path, output_path):
     df = pd.read_csv(input_path)
     print(f"Data dimuat. Shape awal: {df.shape}")
 
-    # 2. Drop ID Column
+    # Drop ID Column
     if 'student_id' in df.columns:
         df = df.drop(columns=['student_id'])
 
-    # 3. Missing Values Handling
+    # Missing Values Handling
     # Spesifik untuk 'prior_programming_experience'
     if 'prior_programming_experience' in df.columns:
         df['prior_programming_experience'] = df['prior_programming_experience'].fillna('No Experience')
@@ -41,12 +41,12 @@ def perform_preprocessing(input_path, output_path):
             # Menggunakan mode()[0] untuk mengambil modus pertama
             df[col] = df[col].fillna(df[col].mode()[0])
 
-    # 4. Duplicate Handling
+    # Duplicate Handling
     initial_rows = len(df)
     df.drop_duplicates(inplace=True)
     print(f"Baris duplikat dihapus: {initial_rows - len(df)}")
 
-    # 5. Binning (Age -> Age Group)
+    # Binning (Age -> Age Group)
     if 'age' in df.columns:
         bins = [15, 18, 24, 34, 44, 55]
         labels = ['Teen', 'Young Adult', 'Adult', 'Mid Adult', 'Senior Adult']
@@ -59,23 +59,21 @@ def perform_preprocessing(input_path, output_path):
         # Drop kolom asli 'age' setelah binning sesuai eksperimen
         df = df.drop(columns=['age'])
 
-    # 6. Scaling (MinMaxScaler)
-    # Re-identifikasi numerik karena 'age' sudah hilang
+    # Scaling (MinMaxScaler)
     num_columns = df.select_dtypes(include=['int64', 'float64']).columns.tolist()
     
     if num_columns:
         scaler = MinMaxScaler()
         df[num_columns] = scaler.fit_transform(df[num_columns])
 
-    # 7. Encoding (LabelEncoder)
-    # Re-identifikasi kategorikal karena ada 'age_group' baru
+    # Encoding (LabelEncoder)
     cat_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()
     
     for col in cat_cols:
         encoder = LabelEncoder()
         df[col] = encoder.fit_transform(df[col])
 
-    # 8. Outlier Handling (IQR Clipping)
+    # Outlier Handling (IQR Clipping)
     # Re-identifikasi numerik untuk proses outlier
     num_cols_final = df.select_dtypes(include=['int64', 'float64']).columns
 
@@ -95,7 +93,7 @@ def perform_preprocessing(input_path, output_path):
             upper=upper_bound[feature]
         )
 
-    # 9. Save Data
+    # Save Data
     folder_path = os.path.dirname(output_path)
     
     # Hanya buat folder jika folder_path tidak kosong
